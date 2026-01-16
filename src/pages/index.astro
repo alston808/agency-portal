@@ -1,16 +1,92 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import clients from '../data/clients.json';
 
+// In a real SSR environment, you grab headers. 
+// For a static site behind Access, we do this client-side or use a Worker.
+// Here is the client-side "White Label" approach.
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Client Portal">
+  <main class="min-h-screen bg-gray-50 flex flex-col items-center py-12">
+    
+    <div class="w-full max-w-4xl bg-white shadow-sm rounded-lg p-8 mb-8">
+      <h1 class="text-3xl font-bold text-gray-900">Your Dashboard</h1>
+      <p class="text-gray-500 mt-2">Manage your website, billing, and previews.</p>
+    </div>
+
+    <div id="client-view" class="w-full max-w-4xl hidden">
+      
+      <div class="bg-white shadow rounded-lg overflow-hidden mb-6 border border-gray-200">
+        <div class="px-6 py-4 border-b border-gray-100 bg-indigo-50 flex justify-between items-center">
+          <h2 class="font-semibold text-indigo-900">Current Preview</h2>
+          <span class="px-2 py-1 text-xs font-bold text-indigo-700 bg-indigo-200 rounded uppercase">Staging</span>
+        </div>
+        <div class="p-6">
+          <p class="text-gray-600 mb-4">
+            This is the latest version of your site. Changes here are not yet public.
+          </p>
+          <div class="aspect-video bg-gray-100 rounded border mb-4 flex items-center justify-center relative group">
+             <iframe id="preview-frame" class="w-full h-full" src=""></iframe>
+             <a id="preview-link" href="#" target="_blank" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-10 transition">
+                <span class="bg-white px-4 py-2 rounded shadow text-sm font-bold opacity-0 group-hover:opacity-100 transition">Open Full Screen ↗</span>
+             </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white p-6 rounded-lg shadow border border-gray-200">
+          <h3 class="font-bold text-gray-900 mb-2">Live Website</h3>
+          <p class="text-sm text-gray-500 mb-4">The version currently visible to the world.</p>
+          <a id="live-link" href="#" target="_blank" class="text-indigo-600 hover:text-indigo-800 font-medium">Visit Live Site &rarr;</a>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow border border-gray-200">
+          <h3 class="font-bold text-gray-900 mb-2">Billing & Invoices</h3>
+          <p class="text-sm text-gray-500 mb-4">Update payment methods or download invoices.</p>
+          <a id="billing-link" href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">Manage Subscription &rarr;</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="loading" class="text-gray-500">Loading your profile...</div>
+
+  </main>
+
+  <script define:vars={{ clients }}>
+    // In production, Cloudflare Access adds a header, but we can't read headers in client-side JS.
+    // Instead, Cloudflare Access has a special endpoint: /cdn-cgi/access/get-identity
+    
+    async function init() {
+      try {
+        const res = await fetch('/cdn-cgi/access/get-identity');
+        if (!res.ok) throw new Error('Not logged in');
+        const user = await res.json();
+        const email = user.email;
+
+        // Find client in our JSON "Database"
+        const client = clients.find(c => c.email === email);
+
+        if (client) {
+          document.getElementById('loading').style.display = 'none';
+          document.getElementById('client-view').classList.remove('hidden');
+          
+          // Populate Data
+          document.getElementById('preview-frame').src = client.previewUrl;
+          document.getElementById('preview-link').href = client.previewUrl;
+          document.getElementById('live-link').href = client.liveUrl;
+          document.getElementById('billing-link').href = client.stripePortal;
+        } else {
+           document.getElementById('loading').innerText = "Access Denied: No account found for " + email;
+        }
+      } catch (e) {
+        // If testing locally (no Access), you can mock this
+        console.log("Local dev mode or not behind Access");
+      }
+    }
+    
+    init();
+  </script>
+</Layout>
