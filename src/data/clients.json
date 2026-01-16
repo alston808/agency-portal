@@ -1,19 +1,11 @@
 
 [
   {
-    "id": "client-001",
-    "name": "Aloha Bakery",
-    "email": "owner@alohabakery.com",
-    "liveUrl": "https://alohabakery.com",
-    "previewUrl": "https://preview.aloha-bakery.pages.dev",
-    "stripePortal": "https://billing.stripe.com/p/login/..."
-  },
-  {
-    "id": "client-002",
-    "name": "Hilo Auto Repair",
-    "email": "contact@hiloauto.com",
-    "liveUrl": "https://hiloauto.com",
-    "previewUrl": "https://staging.hilo-auto.pages.dev",
+    "id": "client-003",
+    "name": "Ono Seafood",
+    "email": "pokebowl.patrol@gmail.com",
+    "liveUrl": "https://ono-seafood.web.alst.site",
+    "previewUrl": "https://ono-seafood.web.alst.site",
     "stripePortal": "https://billing.stripe.com/p/login/..."
   }
 ]

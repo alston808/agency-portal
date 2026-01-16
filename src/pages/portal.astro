@@ -239,20 +239,11 @@ import clients from "../data/clients.json";
 			const content = document.getElementById("client-content");
 
 			try {
-				// MOCK MODE FOR LOCAL DEV
-				let email;
-				if (
-					window.location.hostname === "localhost" ||
-					window.location.hostname === "127.0.0.1"
-				) {
-					console.log("Portal: Running in Mock Mode (Localhost)");
-					email = "owner@alohabakery.com"; // Default for testing
-				} else {
-					const res = await fetch("/cdn-cgi/access/get-identity");
-					if (!res.ok) throw new Error("Not logged in via Access");
-					const identity = await res.json();
-					email = identity.email;
-				}
+				// PRODUCTION: Always fetch identity from Cloudflare Access
+				const res = await fetch("/cdn-cgi/access/get-identity");
+				if (!res.ok) throw new Error("Not logged in via Access");
+				const identity = await res.json();
+				const email = identity.email;
 
 				const client = clients.find(
 					(c) => c.email.toLowerCase() === email.toLowerCase()

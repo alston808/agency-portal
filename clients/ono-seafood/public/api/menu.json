@@ -1,0 +1,66 @@
+[
+  {
+    "id": "#1",
+    "name": "Shoyu Ahi",
+    "protein": "Tuna",
+    "description": "Our signature. A proprietary blend of shoyu, fresh ginger, and sesame that lets the premium fish shine through.",
+    "profile": "Umami • Aromatic • Classic",
+    "color": "bg-amber-50 border-amber-200"
+  },
+  {
+    "id": "#2",
+    "name": "Shoyu Tako",
+    "protein": "Octopus",
+    "description": "The octopus version of our classic. Secret shoyu blend with chili, perfectly coating the chewy tako.",
+    "profile": "Chewy • Savory • Deep",
+    "color": "bg-amber-50 border-amber-200"
+  },
+  {
+    "id": "#3",
+    "name": "Hawaiian Style Ahi",
+    "protein": "Tuna",
+    "description": "Pre-colonial style. No soy sauce—just Alaea salt, limu (seaweed), and inamona (roasted kukui nut) for authentic island flavor.",
+    "profile": "Oceanic • Crunchy • Nutty",
+    "color": "bg-emerald-50 border-emerald-200"
+  },
+  {
+    "id": "#4",
+    "name": "Hawaiian Style Tako",
+    "protein": "Octopus",
+    "description": "The purist's octopus. Salt, limu, and chili allow the natural sweetness of the tako to take center stage.",
+    "profile": "Salty • Spicy • Pure",
+    "color": "bg-emerald-50 border-emerald-200"
+  },
+  {
+    "id": "#5",
+    "name": "Miso Ahi",
+    "protein": "Tuna",
+    "description": "Rich miso paste and a touch of sweetness create a creamy, savory glaze without any dairy.",
+    "profile": "Sweet • Savory • Thick",
+    "color": "bg-orange-50 border-orange-200"
+  },
+  {
+    "id": "#6",
+    "name": "Miso Tako",
+    "protein": "Octopus",
+    "description": "Miso-glazed octopus with natural tenderizing from the fermented paste. A unique, slightly sweet option.",
+    "profile": "Sweet • Tender • Unique",
+    "color": "bg-orange-50 border-orange-200"
+  },
+  {
+    "id": "#7",
+    "name": "Spicy Ahi",
+    "protein": "Tuna",
+    "description": "The crowd favorite. Creamy mayo, chili oil, and tobiko (fish roe) deliver the perfect balance of heat and richness.",
+    "profile": "Creamy • Spicy • Rich",
+    "color": "bg-red-50 border-red-200"
+  },
+  {
+    "id": "#8",
+    "name": "Wasabi Ahi",
+    "protein": "Tuna",
+    "description": "Sharp wasabi and shoyu for that clean, nasal heat. Not overpowering—just perfectly zesty.",
+    "profile": "Sharp • Pungent • Zesty",
+    "color": "bg-green-50 border-green-200"
+  }
+]

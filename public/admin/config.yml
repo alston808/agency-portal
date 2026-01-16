@@ -1,6 +1,8 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: alston/agency-portal
   branch: main
+  client_id: Ov23lipzLdbTjZq6ODdY
 
 media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
@@ -13,6 +15,6 @@ collections:
         label: "Home Page"
         name: "home"
         fields:
-          - {label: "Main Title", name: "title", widget: "string"}
-          - {label: "Hero Description", name: "description", widget: "text"}
-          - {label: "Call to Action", name: "cta_text", widget: "string"}
+          - { label: "Main Title", name: "title", widget: "string" }
+          - { label: "Hero Description", name: "description", widget: "text" }
+          - { label: "Call to Action", name: "cta_text", widget: "string" }
