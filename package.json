@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@astrojs/vue": "^5.1.4",
+    "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.16.9",
+    "daisyui": "^5.5.14",
     "tailwindcss": "^4.1.18",
     "vue": "^3.5.26"
   }

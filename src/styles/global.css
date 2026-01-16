@@ -1,1 +1,19 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap");
+
+@theme {
+	--font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif,
+		"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+	name: "custom";
+	base: "light";
+	primary: #4f46e5;
+	secondary: #f59e0b;
+}
+
+:root {
+	font-family: var(--font-sans);
+}

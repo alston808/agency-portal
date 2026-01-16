@@ -1,45 +1,40 @@
 ---
-// This is the Frontmatter (Server-Side Logic)
+import Layout from "../layouts/Layout.astro";
+
 const title = "Welcome to Alika Dev";
 const description = "We build high-performance websites for modern businesses.";
 const cta_text = "Get Started";
 ---
 
-<html lang="en" data-theme="corporate">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<title>{title}</title>
-	</head>
-	<body>
-		<div class="navbar bg-base-100 shadow-sm">
-			<div class="flex-1">
-				<a class="btn btn-ghost text-xl font-bold tracking-tighter">ALIKA<span class="text-primary">DEV</span></a>
-			</div>
-			<div class="flex-none">
-				<ul class="menu menu-horizontal px-1">
-					<li><a>Services</a></li>
-					<li><a>Portfolio</a></li>
-					<li><a href="/admin" target="_blank">Login</a></li>
-				</ul>
+<Layout title={title} description={description}>
+	<div class="navbar bg-base-100 shadow-sm">
+		<div class="flex-1">
+			<a class="btn btn-ghost text-xl font-bold tracking-tighter"
+				>ALIKA<span class="text-primary">DEV</span></a
+			>
+		</div>
+		<div class="flex-none">
+			<ul class="menu menu-horizontal px-1">
+				<li><a>Services</a></li>
+				<li><a>Portfolio</a></li>
+				<li><a href="/portal">Login</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="hero min-h-screen bg-base-200">
+		<div class="hero-content text-center">
+			<div class="max-w-md">
+				<h1 class="text-5xl font-bold">{title}</h1>
+				<p class="py-6">{description}</p>
+				<button class="btn btn-primary">{cta_text}</button>
 			</div>
 		</div>
+	</div>
 
-		<div class="hero min-h-screen bg-base-200">
-			<div class="hero-content text-center">
-				<div class="max-w-md">
-					<h1 class="text-5xl font-bold">{title}</h1>
-					<p class="py-6">{description}</p>
-					<button class="btn btn-primary">{cta_text}</button>
-				</div>
-			</div>
+	<footer class="footer items-center p-4 bg-neutral text-neutral-content">
+		<div class="items-center grid-flow-col">
+			<p>Copyright © 2026 - All right reserved</p>
 		</div>
-
-		<footer class="footer items-center p-4 bg-neutral text-neutral-content">
-			<div class="items-center grid-flow-col">
-				<p>Copyright © 2026 - All right reserved</p>
-			</div> 
-		</footer>
-	</body>
-</html>
+	</footer>
+</Layout>

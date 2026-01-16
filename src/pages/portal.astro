@@ -1,0 +1,292 @@
+---
+import Layout from "../layouts/Layout.astro";
+import clients from "../data/clients.json";
+
+// Note: Cloudflare Access identity is fetched client-side via /cdn-cgi/access/get-identity
+---
+
+<Layout title="Client Portal | Alika Dev">
+	<main class="min-h-screen bg-base-200 py-12 px-4">
+		<div class="max-w-5xl mx-auto">
+			<!-- Header -->
+			<div
+				class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8"
+			>
+				<div>
+					<h1 class="text-4xl font-extrabold tracking-tight">Your Dashboard</h1>
+					<p class="text-base-content/60 mt-1 text-lg">
+						Manage your project, billing, and previews.
+					</p>
+				</div>
+				<div id="user-pill" class="hidden">
+					<div class="badge badge-outline gap-2 py-4 px-4 text-sm font-medium">
+						<div class="w-2 h-2 rounded-full bg-success animate-pulse"></div>
+						<span id="user-email"></span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Loading State -->
+			<div
+				id="loading-state"
+				class="flex flex-col items-center justify-center py-20 bg-base-100 rounded-2xl shadow-xl border border-base-300"
+			>
+				<span class="loading loading-ring loading-lg text-primary"></span>
+				<p class="mt-4 font-medium text-base-content/70">
+					Authenticating your session...
+				</p>
+			</div>
+
+			<!-- Access Denied -->
+			<div
+				id="denied-state"
+				class="hidden flex flex-col items-center justify-center py-20 bg-error/10 rounded-2xl shadow-xl border border-error/20 text-center px-6"
+			>
+				<div class="bg-error text-error-content p-4 rounded-full mb-4">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-10 w-10"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+						></path>
+					</svg>
+				</div>
+				<h2 class="text-2xl font-bold text-error">Access Denied</h2>
+				<p class="mt-2 max-w-md" id="denied-message">
+					No account found for your email. Please contact support.
+				</p>
+				<a href="/" class="btn btn-ghost mt-6">Return Home</a>
+			</div>
+
+			<!-- Content (Hidden by default) -->
+			<div
+				id="client-content"
+				class="hidden space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500"
+			>
+				<!-- Preview Section -->
+				<div
+					class="card bg-base-100 shadow-xl border border-base-300 overflow-hidden"
+				>
+					<div class="card-body p-0">
+						<div
+							class="bg-primary px-8 py-4 flex justify-between items-center text-primary-content"
+						>
+							<div>
+								<h2 class="text-xl font-bold">Staging Preview</h2>
+								<p
+									class="text-xs opacity-80 uppercase tracking-widest font-semibold mt-0.5"
+								>
+									Live Environment • Non-Public
+								</p>
+							</div>
+							<div class="badge badge-accent shadow-sm">Experimental</div>
+						</div>
+
+						<div class="p-8">
+							<p class="text-base-content/70 mb-6 max-w-2xl text-lg">
+								This is the latest version of your site. Changes here are
+								verified by our team before being pushed to your live domain.
+							</p>
+
+							<div
+								class="relative group aspect-video bg-base-300 rounded-xl overflow-hidden border border-base-300 shadow-inner"
+							>
+								<iframe
+									id="preview-iframe"
+									class="w-full h-full"
+									src="about:blank"></iframe>
+								<div
+									class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4"
+								>
+									<a
+										id="preview-link"
+										href="#"
+										target="_blank"
+										class="btn btn-white btn-lg shadow-2xl"
+									>
+										Open Full Screen
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											class="h-5 w-5 ml-2"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke="currentColor"
+										>
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+											></path>
+										</svg>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Links Grid -->
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+					<!-- Live Site -->
+					<div
+						class="card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl transition-shadow"
+					>
+						<div class="card-body">
+							<div class="flex items-center gap-4 mb-2">
+								<div class="bg-success/20 text-success p-3 rounded-xl">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										class="h-6 w-6"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+										></path>
+									</svg>
+								</div>
+								<h3 class="card-title text-2xl font-bold">Live Website</h3>
+							</div>
+							<p class="text-base-content/60 text-lg mb-6">
+								The version currently visible to your customers.
+							</p>
+							<div class="card-actions">
+								<a
+									id="live-link"
+									href="#"
+									target="_blank"
+									class="btn btn-outline btn-block btn-lg group"
+								>
+									Visit alikadev.com
+									<span
+										class="ml-auto group-hover:translate-x-1 transition-transform"
+										>&rarr;</span
+									>
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<!-- Billing -->
+					<div
+						class="card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl transition-shadow"
+					>
+						<div class="card-body">
+							<div class="flex items-center gap-4 mb-2">
+								<div class="bg-warning/20 text-warning p-3 rounded-xl">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										class="h-6 w-6"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+										></path>
+									</svg>
+								</div>
+								<h3 class="card-title text-2xl font-bold">
+									Invoices & Billing
+								</h3>
+							</div>
+							<p class="text-base-content/60 text-lg mb-6">
+								Update payment methods or download receipts.
+							</p>
+							<div class="card-actions">
+								<a
+									id="billing-link"
+									href="#"
+									target="_blank"
+									class="btn btn-outline btn-block btn-lg group"
+								>
+									Stripe Portal
+									<span
+										class="ml-auto group-hover:translate-x-1 transition-transform"
+										>&rarr;</span
+									>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<script define:vars={{ clients }}>
+		async function init() {
+			const emailContainer = document.getElementById("user-email");
+			const userPill = document.getElementById("user-pill");
+			const loadingState = document.getElementById("loading-state");
+			const deniedState = document.getElementById("denied-state");
+			const deniedMessage = document.getElementById("denied-message");
+			const content = document.getElementById("client-content");
+
+			try {
+				// MOCK MODE FOR LOCAL DEV
+				let email;
+				if (
+					window.location.hostname === "localhost" ||
+					window.location.hostname === "127.0.0.1"
+				) {
+					console.log("Portal: Running in Mock Mode (Localhost)");
+					email = "owner@alohabakery.com"; // Default for testing
+				} else {
+					const res = await fetch("/cdn-cgi/access/get-identity");
+					if (!res.ok) throw new Error("Not logged in via Access");
+					const identity = await res.json();
+					email = identity.email;
+				}
+
+				const client = clients.find(
+					(c) => c.email.toLowerCase() === email.toLowerCase()
+				);
+
+				if (client) {
+					// Success
+					emailContainer.innerText = email;
+					userPill.classList.remove("hidden");
+					loadingState.classList.add("hidden");
+					content.classList.remove("hidden");
+
+					// Populate Data
+					document.getElementById("preview-iframe").src = client.previewUrl;
+					document.getElementById("preview-link").href = client.previewUrl;
+					document.getElementById("live-link").href = client.liveUrl;
+					document.getElementById("live-link").innerText =
+						`Visit ${new URL(client.liveUrl).hostname} →`;
+					document.getElementById("billing-link").href = client.stripePortal;
+				} else {
+					// No client found
+					loadingState.classList.add("hidden");
+					deniedState.classList.remove("hidden");
+					deniedMessage.innerText = `No client record found for "${email}". If you believe this is an error, please contact Alika Dev support.`;
+				}
+			} catch (err) {
+				console.error("Auth Error:", err);
+				loadingState.classList.add("hidden");
+				deniedState.classList.remove("hidden");
+				deniedMessage.innerText =
+					"Connection to Cloudflare Access failed. Ensure this site is behind Access.";
+			}
+		}
+
+		init();
+	</script>
+</Layout>
